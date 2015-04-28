@@ -64,7 +64,7 @@ ajout utilistaeurs par :
 
 visudo
 
-##Mdifier la config ssh
+##Modifier la config ssh
 
 vi /etc/ssh/sshd_config
 
@@ -189,8 +189,13 @@ TODO
 
 [voir](https://github.com/Grosloup/tuto-elk-howto/blob/master/tuto.md)
 
-##Iptabales
+##Iptables
 
 cd /etc/init.d
 
 wget https://github.com/Grosloup/tuto-server-howto/blob/master/firewall
+
+
+##ftp
+
+TODO
