@@ -84,7 +84,7 @@ apt-get install nginx
 
 ###Configuration
 
-[voir](https://bitbucket.org/Grosloup/tuto-server-howto/src/6b1ea32d51efa0fbbd4aae51c2344b73ab9a1df6/config-nginx.md?at=master)
+[voir](https://github.com/Grosloup/tuto-server-howto/blob/master/config-nginx.md)
 
 ##Installation mysql
 
@@ -193,4 +193,4 @@ TODO
 
 cd /etc/init.d
 
-wget https://bitbucket.org/Grosloup/tuto-server-howto/src/ee285dc639b7bae54457ca813e663fe14f44319f/firewall?at=master
+wget https://github.com/Grosloup/tuto-server-howto/blob/master/firewall
