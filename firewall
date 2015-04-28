@@ -1,0 +1,92 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          Firewall maison
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Firewall maison
+### END INIT INFO
+
+# mise a zero
+## vidange des tables
+iptables -t filter -F
+
+##vidange des regles perso
+iptables -t filter -X
+
+#tout bloquer
+iptables -t filter -P INPUT DROP
+iptables -t filter -P FORWARD DROP
+iptables -t filter -P OUTPUT DROP
+
+# ne pas casser les connexion etablies
+iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+#autoriser loopback
+iptables -t filter -A INPUT -i lo -j ACCEPT
+iptables -t filter -A OUTPUT -o lo -j ACCEPT
+
+# ping ICMP
+iptables -t filter -A INPUT -p icmp -j ACCEPT
+iptables -t filter -A OUTPUT -p icmp -j ACCEPT
+
+#ssh
+iptables -t filter -A INPUT -p tcp --dport 5371 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 5371 -j ACCEPT
+
+# DNS In/Out
+iptables -t filter -A OUTPUT -p tcp --dport 53 -j ACCEPT
+iptables -t filter -A OUTPUT -p udp --dport 53 -j ACCEPT
+iptables -t filter -A INPUT -p tcp --dport 53 -j ACCEPT
+iptables -t filter -A INPUT -p udp --dport 53 -j ACCEPT
+
+# NTP Out
+iptables -t filter -A OUTPUT -p udp --dport 123 -j ACCEPT
+
+# HTTP + HTTPS Out
+iptables -t filter -A OUTPUT -p tcp --dport 80 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 443 -j ACCEPT
+
+# HTTP + HTTPS In
+iptables -t filter -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -t filter -A INPUT -p tcp --dport 443 -j ACCEPT
+iptables -t filter -A INPUT -p tcp --dport 8443 -j ACCEPT
+
+# FTP Out
+iptables -t filter -A OUTPUT -p tcp --dport 21 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 20 -j ACCEPT
+
+# FTP In
+# imodprobe ip_conntrack_ftp # ligne facultative avec les serveurs OVH
+iptables -t filter -A INPUT -p tcp --dport 20 -j ACCEPT
+iptables -t filter -A INPUT -p tcp --dport 21 -j ACCEPT
+iptables -t filter -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Mail SMTP:25
+iptables -t filter -A INPUT -p tcp --dport 25 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 25 -j ACCEPT
+
+# Mail POP3:110
+iptables -t filter -A INPUT -p tcp --dport 110 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 110 -j ACCEPT
+
+# Mail IMAP:143
+iptables -t filter -A INPUT -p tcp --dport 143 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 143 -j ACCEPT
+
+# Mail POP3S:995
+iptables -t filter -A INPUT -p tcp --dport 995 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 995 -j ACCEPT
+
+# Monit
+iptables -t filter -A INPUT -p tcp --dport 4598 -j ACCEPT
+
+# Webmin
+iptables -t filter -A INPUT -p tcp --dport 10000 -j ACCEPT
+
+#munin
+iptables -t filter -A INPUT -p tcp --dport 4949 -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --dport 4949 -j ACCEP
