@@ -54,7 +54,11 @@ apt-get -f install
 
 apt-get install fail2ban
 
+TODO config fail2ban
+
 apt-get install webmin
+
+TODO config webmin
 
 ##Installation sudo
 
